@@ -17,14 +17,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the main application
 COPY main.py .
 
-# Copy sample data for testing
-COPY sample_dataset/ ./sample_dataset/
+# Create input and output directories
+RUN mkdir -p /app/input /app/output
 
-# Create output directory
-RUN mkdir -p /app/output
+# Copy sample data for testing (optional)
+COPY sample_dataset/ ./sample_dataset/
 
 # Set the entrypoint to run the main.py script
 ENTRYPOINT ["python", "main.py"]
 
-# Default command arguments - can be overridden
-CMD ["sample_dataset/pdfs/*.pdf", "output"] 
+# Default command arguments - process all PDFs from /app/input to /app/output
+CMD ["/app/input/*.pdf", "/app/output"]
